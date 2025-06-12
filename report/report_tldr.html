@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TL;DR: Análise de Estratégias Playwright & Gherkin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .section-title {
+            color: #111827;
+            border-bottom: 3px solid #3b82f6;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .advantage-icon { color: #16a34a; }
+        .disadvantage-icon { color: #dc2626; }
+        
+        code {
+            background-color: #e5e7eb;
+            color: #1f2937;
+            padding: 0.125rem 0.3rem;
+            border-radius: 0.25rem;
+            font-size: 0.875em;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                background-color: white;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #e5e7eb;
+                page-break-inside: avoid;
+            }
+            .no-print {
+                display: none;
+            }
+            .print-container {
+                 padding: 0 !important;
+                 margin: 0 !important;
+            }
+            code {
+                background-color: #e5e7eb !important;
+                color: #1f2937 !important;
+                border: 1px solid #d1d5db;
+            }
+        }
+    </style>
+</head>
+<body class="text-gray-700">
+    <div class="container mx-auto p-4 md:p-10 print-container">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">TL;DR: Estratégia de Testes Playwright & Gherkin</h1>
+            <p class="text-xl text-gray-600 mt-2">Um resumo visual para uma decisão informada e estratégica.</p>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Scenarios Section -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-10 section-title">Análise dos 3 Cenários</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Scenario 1: Playwright + playwright-bdd -->
+                    <article class="card p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl bg-blue-100 text-blue-600 rounded-full h-14 w-14 flex items-center justify-center font-bold mr-4">1</span>
+                            <h3 class="text-2xl font-bold text-gray-800">Playwright + <code>playwright-bdd</code></h3>
+                        </div>
+                        <p class="mb-6 text-sm">Usa uma ferramenta para converter arquivos Gherkin (<code>.feature</code>) em testes Playwright, mantendo o executor nativo do Playwright.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-up mr-2 advantage-icon"></i>Vantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li><b>Mantém 100% dos benefícios do runner Playwright</b>.</li>
+                                    <li>Permite uso de Gherkin formal para negócio.</li>
+                                    <li>Configuração mais simples que a integração com Cucumber.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-down mr-2 disadvantage-icon"></i>Desvantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li>Adiciona dependência de biblioteca de terceiros.</li>
+                                    <li>Requer um passo extra de "build" (<code>bddgen</code>).</li>
+                                    <li>Pequena curva de aprendizado da ferramenta.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Scenario 2: Playwright + Cucumber -->
+                    <article class="card p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl bg-red-100 text-red-600 rounded-full h-14 w-14 flex items-center justify-center font-bold mr-4">2</span>
+                            <h3 class="text-2xl font-bold text-gray-800">Playwright + Cucumber</h3>
+                        </div>
+                        <p class="mb-6 text-sm">Abordagem BDD tradicional, onde o Cucumber é o executor de testes e o Playwright é usado apenas como biblioteca de automação.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-up mr-2 advantage-icon"></i>Vantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li>Ferramenta BDD madura e com vasta comunidade.</li>
+                                    <li>Clara separação entre especificação e automação.</li>
+                                    <li>Rico ecossistema de relatórios do Cucumber.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-down mr-2 disadvantage-icon"></i>Desvantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li><b>Perda dos principais benefícios do runner Playwright</b>.</li>
+                                    <li>Aumenta significativamente a complexidade da stack.</li>
+                                    <li>Maior sobrecarga de configuração e manutenção.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Scenario 3: Playwright Puro -->
+                    <article class="card p-6">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl bg-green-100 text-green-600 rounded-full h-14 w-14 flex items-center justify-center font-bold mr-4">3</span>
+                            <h3 class="text-2xl font-bold text-gray-800">Playwright Puro</h3>
+                        </div>
+                        <p class="mb-6 text-sm">Usa recursos nativos do Playwright (<code>test.describe</code>, <code>test.step</code>) para criar testes legíveis com uma abordagem similar ao BDD.</p>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-up mr-2 advantage-icon"></i>Vantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li><b>Máxima simplicidade da stack</b> e manutenção.</li>
+                                    <li>Performance otimizada e acesso total ao ecossistema Playwright.</li>
+                                    <li>Maior facilidade para encontrar e treinar talentos.</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-lg mb-2 flex items-center"><i class="fas fa-thumbs-down mr-2 disadvantage-icon"></i>Desvantagens</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1 pl-2">
+                                    <li>Não utiliza arquivos <code>.feature</code> formais.</li>
+                                    <li>Legibilidade depende da disciplina da equipe na escrita do código.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- Recommendations Section -->
+            <section>
+                <h2 class="text-3xl font-bold text-center mb-10 section-title">Recomendações Estratégicas</h2>
+                <div class="bg-white rounded-lg shadow-lg p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <!-- Main Recommendation -->
+                        <div class="border-l-4 border-blue-500 pl-6">
+                            <div class="flex items-center mb-3">
+                                <i class="fas fa-trophy text-3xl text-yellow-500 mr-4"></i>
+                                <h3 class="text-2xl font-bold text-gray-800">Recomendação Principal</h3>
+                            </div>
+                            <h4 class="text-xl font-semibold text-blue-600 mb-2">Cenário 3: Playwright Puro</h4>
+                            <p>Esta abordagem oferece o melhor equilíbrio, alinhando-se com as prioridades de <strong>simplicidade, baixa manutenção e performance</strong>, sem sacrificar a legibilidade. A combinação de <code>test.describe</code>, <code>test.step</code> e bons relatórios (como o Trace Viewer) serve como uma "documentação viva" eficaz.</p>
+                        </div>
+                        
+                        <!-- Alternatives -->
+                        <div class="space-y-6">
+                            <div class="border-l-4 border-green-500 pl-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Alternativa Forte</h3>
+                                <h4 class="text-lg font-semibold text-green-600 mb-1">Cenário 1: Playwright + <code>playwright-bdd</code></h4>
+                                <p class="text-sm">Ideal se o uso de arquivos <code>.feature</code> for um requisito <strong>inegociável</strong>. É o melhor compromisso, pois une o Gherkin formal com o poderoso executor de testes do Playwright.</p>
+                            </div>
+                             <div class="border-l-4 border-red-500 pl-6">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Menos Recomendado</h3>
+                                <h4 class="text-lg font-semibold text-red-600 mb-1">Cenário 2: Playwright + Cucumber</h4>
+                                <p class="text-sm">O custo de <strong>perder as funcionalidades nativas do Playwright</strong> e aumentar a complexidade da stack é muito alto, contrariando as diretrizes chave do projeto.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="text-center mt-12 pt-6 border-t border-gray-300">
+            <p class="text-sm text-gray-500 no-print">Este é um resumo do Relatório de Análise de Cenários para Implementação de Testes E2E.</p>
+        </footer>
+    </div>
+</body>
+</html>
