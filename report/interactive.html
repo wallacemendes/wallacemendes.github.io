@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisador Interativo de Estratégias de Teste: Playwright & Gherkin</title>
+    <title>Relatório Interativo de Estratégias de Teste: Playwright & Gherkin</title>
     
     <!-- Chosen Palette: Calm Corporate Blue -->
     <!-- Application Structure Plan: A dashboard-style SPA. The user is first presented with the final recommendation and a high-level visual comparison (radar chart) of the three scenarios. Below, an interactive "deep dive" section allows users to click on each scenario to view its detailed description, pros, cons, and code examples in a structured, easy-to-digest format. This prioritizes quick understanding and decision-making over linear reading, enabling users to explore the 'why' behind the recommendation on demand. A final section summarizes best practices as actionable takeaways. -->
@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -73,17 +74,26 @@
             content: '\f165'; /* thumbs-down */
             color: #ef4444;
         }
-        .code-block {
-            background-color: #1e293b;
-            color: #e2e8f0;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-family: 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', "Liberation Mono", "Courier New", monospace;
-            font-size: 0.875rem;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        /* highlight.js adjustments */
+        pre code.hljs{
+            display:block;
+            overflow-x:auto;
+            padding:1em
         }
+        code.hljs{
+            padding:3px 5px
+        }
+        .hljs{
+            background:#1e293b; /* bg-slate-800 */
+            color:#f8fafc /* text-slate-50 */
+        }
+        .hljs-comment,.hljs-quote{color:#94a3b8;font-style:italic}
+        .hljs-keyword,.hljs-literal,.hljs-selector-tag,.hljs-type{color:#7c3aed}
+        .hljs-number{color:#fb923c}
+        .hljs-string,.hljs-regexp,.hljs-symbol,.hljs-template-variable{color:#22c55e}
+        .hljs-variable,.hljs-template-tag{color:#f43f5e}
+        .hljs-title, .hljs-function, .hljs-class .hljs-title {color: #3b82f6}
+        .hljs-attr{color:#fde047}
     </style>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -94,8 +104,11 @@
 
         <!-- Header -->
         <header class="text-center mb-12">
-            <h1 class="text-3xl md:text-4xl font-bold section-title">Analisador Interativo de Estratégias de Teste</h1>
-            <p class="text-lg md:text-xl text-slate-500 mt-2">Playwright & Gherkin: Uma Análise Visual para sua Decisão</p>
+            <h1 class="text-3xl md:text-4xl font-bold section-title">Relatório Interativo de Estratégias de Teste</h1>
+            <p class="text-lg md:text-xl text-slate-500 mt-2 mb-6">Playwright & Gherkin: Uma Análise Visual para sua Decisão</p>
+            <a href="tldr.html" class="inline-block bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+                <i class="fa-solid fa-file-lines mr-2"></i>Ver Versão TL;DR
+            </a>
         </header>
 
         <!-- Main Dashboard -->
@@ -172,7 +185,10 @@
 
         </main>
     </div>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/gherkin.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // --- DATA ---
@@ -345,9 +361,14 @@
 
             for (const [fileName, code] of Object.entries(data.codeExamples)) {
                 const activeClass = isFirstCodeTab ? 'active' : '';
+                let language = 'plaintext';
+                if (fileName.endsWith('.ts')) language = 'typescript';
+                if (fileName.endsWith('.js')) language = 'javascript';
+                if (fileName.endsWith('.feature')) language = 'gherkin';
+
                 codeTabsHtml += `<button class="tab py-2 px-4 border-b-2 font-medium text-slate-500 ${activeClass}" data-tab="${fileName}">${fileName}</button>`;
                 codePanelsHtml += `<div class="tab-content mt-4 ${activeClass}" id="tab-content-${fileName}">
-                                      <div class="code-block">${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                                      <pre><code class="language-${language} rounded-md">${code.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</code></pre>
                                    </div>`;
                 isFirstCodeTab = false;
             }
@@ -378,6 +399,11 @@
                         </div>
                     </div>
                 </div>`;
+                
+            // Highlight the newly added code blocks
+            detailsContainer.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
                 
             // Add event listeners for the new tabs
             const tabsContainer = detailsContainer.querySelector('.border-b');
